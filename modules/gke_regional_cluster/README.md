@@ -106,6 +106,13 @@ module "cluster" {
 - GCP project with billing enabled
 - Proper IAM permissions for creating GKE clusters and networking resources
 - A pre-created custom VPC or shared default VPC with the required subnet(s)
+- The following Google Service APIs should be enabled
+  - artifactregistry.googleapis.com
+  - container.googleapis.com
+  - compute.googleapis.com
+  - iam.googleapis.com
+  - monitoring.googleapis.com
+  - cloudresourcemanager.googleapis.com
 
 
 ## Notes

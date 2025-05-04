@@ -77,7 +77,7 @@ module "cloud_function_check_unattached_volumes" {
 - GCP project with billing enabled
 - Proper IAM permissions for creating GKE clusters and networking resources
 - Pre-existing source code to be used for the Cloud Function
-- Enabled GCP APIs:
+- Enabled GCP Service APIs:
   - Cloud Functions API
   - Cloud Build API
   - IAM API
