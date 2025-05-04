@@ -36,8 +36,7 @@ None.
 
 - [Terraform](https://www.terraform.io/) >= 1.0
 - GCP project with billing enabled
-- Proper IAM permissions for creating GKE clusters and networking resources
-- A pre-created custom VPC or shared default VPC with the required subnet(s)
+- Proper IAM permissions for enabeling API services
 
 
 ## Notes

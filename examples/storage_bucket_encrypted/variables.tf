@@ -1,8 +1,9 @@
 variable "project_id" {
   description = "Google Project ID"
   type        = string
-  default     = "gcp-terraform-modules-test" # An example
-  sensitive   = true
+  # default     = "gcp-terraform-modules-test" # An example
+  default   = "development-450619"
+  sensitive = true
 }
 
 variable "region" {
@@ -17,6 +18,5 @@ variable "common_labels" {
   default = {
     team      = "sre"
     terrafrom = "true"
-    app_id    = "infra"
   }
 }

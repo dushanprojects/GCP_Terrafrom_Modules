@@ -13,6 +13,7 @@ variable "min_master_version" {
   type        = string
   description = "value"
 }
+
 variable "region" {
   type        = string
   description = "The GCP region where resources will be provisioned."
@@ -42,7 +43,8 @@ variable "custom_vpc_used" {
 
 variable "common_labels" {
   type        = map(any)
-  description = "A map of common labels to apply to all resources."
+  default     = {}
+  description = "A map of key-value pairs to tag resources consistently"
 }
 
 variable "private_instance_tags" {

@@ -13,8 +13,9 @@ module "enable_google_service_apis" {
 }
 
 module "vpc" {
-  source                 = "../../modules/vpc"
-  environment            = var.environment
+  source = "../../modules/vpc"
+
+  name                   = "us-east-custom-dev"
   region                 = var.region
   public_ip_cidr_range   = var.public_ip_cidr_range
   private_ip_cidr_range  = var.private_ip_cidr_range
