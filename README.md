@@ -1,4 +1,4 @@
-# GCP Terraform Common Examples
+# GCP Terraform Modules and Common Examples
 
 This repository contains a collection of reusable and practical Terraform examples for Google Cloud Platform (GCP).  
 Each module demonstrates common patterns and best practices to help you quickly build reliable infrastructure on GCP.
