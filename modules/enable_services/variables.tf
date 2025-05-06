@@ -9,6 +9,6 @@ variable "apis" {
 
 variable "project_id" {
   type        = string
-  description = "Get Google Project ID value from terrafrom.auto.tfvars"
+  description = "The Google Project ID"
   sensitive   = true
 }

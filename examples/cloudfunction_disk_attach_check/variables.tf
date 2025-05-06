@@ -14,7 +14,7 @@ variable "environment" {
 variable "region" {
   type        = string
   default     = "us-east1"
-  description = "The GCP region where the VPC is created"
+  description = "The GCP region where resources will be provisioned"
 }
 
 variable "common_labels" {
