@@ -53,6 +53,18 @@ resource "google_project_iam_binding" "artifact_read_access" {
   ]
 }
 
+# Additional Role binding
+resource "google_project_iam_binding" "additional_iam_bindings" {
+  count = length(var.additional_iam_bindings)
+
+  project = google_cloudfunctions_function.function.project
+  role    = var.additional_iam_bindings[count.index]
+
+  members = [
+    "serviceAccount:${google_service_account.invoker.email}"
+  ]
+}
+
 # Cloud Function scheduler job
 resource "google_cloud_scheduler_job" "function_cron_job" {
   count       = var.event_trigger_enabled ? 1 : 0

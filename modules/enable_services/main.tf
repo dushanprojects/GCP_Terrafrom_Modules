@@ -4,4 +4,9 @@ resource "google_project_service" "services" {
   project                    = var.project_id
   service                    = each.value
   disable_dependent_services = true
+
+  timeouts {
+    create = "10m"
+    delete = "10m"
+  }
 }
