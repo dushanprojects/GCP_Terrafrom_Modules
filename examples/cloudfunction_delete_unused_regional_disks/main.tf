@@ -16,6 +16,7 @@ module "enable_google_service_apis" {
   apis = [
     "cloudfunctions.googleapis.com",
     "cloudscheduler.googleapis.com",
+    "cloudbuild.googleapis.com",
     "iamcredentials.googleapis.com",
     "artifactregistry.googleapis.com",
     "compute.googleapis.com",
@@ -25,22 +26,23 @@ module "enable_google_service_apis" {
 
 data "archive_file" "this" {
   type        = "zip"
-  source_dir  = "${path.root}/src/check-unattached-volumes"
+  source_dir  = "${path.root}/src/delete-unused-regional-disks"
   output_path = "${path.root}/src/function.zip"
 }
 
-module "cloud_function_check_unattached_volumes" {
+module "cloud_function_delete_unused_regional_disks" {
   source = "../../modules/cloud_function"
 
-  name                     = "check-unattached-volumes"
+  name                     = "delete-regional-disks"
   region                   = var.region
-  runtime                  = "go123"
-  entry_point              = "CheckUnattachedVolumes"
+  runtime                  = "go121"
+  entry_point              = "DeleteUnusedRegionalDisks"
   source_archive_file_name = "${path.root}/src/function.zip"
   environment_variables = {
     PROJECT = var.project_id
     REGION  = var.region
   }
+  additional_iam_bindings = ["roles/compute.storageAdmin"]
   common_labels = merge(var.common_labels, {
     environment = "development"
     appid       = "app1"

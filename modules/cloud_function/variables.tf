@@ -73,6 +73,12 @@ variable "environment_variables" {
   description = "A set of key/value environment variable pairs to assign to the function - Optional"
 }
 
+variable "additional_iam_bindings" {
+  description = "Additional IAM bindings for invoker service account"
+  type        = list(string)
+  default     = []
+}
+
 variable "common_labels" {
   type        = map(any)
   default     = {}

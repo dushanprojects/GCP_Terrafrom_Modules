@@ -1,9 +1,9 @@
 
-# Google Cloud Function Example - Check unattached volumes
+# Google Cloud Function Example – Delete Unattached Zonal Disks
 
-This Google Cloud Function example identifies and lists unattached (orphaned) persistent disks in your GCP project. It can be used to monitor unused resources and optimize cloud costs by flagging disks that are no longer in use.
+This Google Cloud Function example identifies and deletes unattached (or orphaned) zonal persistent disks in your GCP project. It helps monitor unused resources and optimize cloud costs by cleaning up disks that are no longer in use.
 
-## Inputs
+## Inputs (Example-Specific)
 
 | Name                       | Description                                                                 | Type          | Required |
 |----------------------------|-----------------------------------------------------------------------------|---------------|----------|
@@ -19,6 +19,7 @@ This Google Cloud Function example identifies and lists unattached (orphaned) pe
 | `cron_schedule`            | Cron expression used in the function - Optional                             | `string`      | Optional |
 | `time_zone`                | Time zone for the cron schedule (e.g. UTC)                                  | `string`      | Optional |
 | `environment_variables`    | A set of key/value environment variable pairs to assign to the function.    | `map(string)` | Yes      |
+| `additional_iam_bindings`  | Additional IAM bindings for invoker service account                         | `list(string)`| Yes      |
 | `common_labels`            | A map of key-value pairs to tag resources consistently                      | `map(string)` | Optional |
 
 
