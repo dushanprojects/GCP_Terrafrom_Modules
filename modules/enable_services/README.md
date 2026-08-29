@@ -62,10 +62,10 @@ Enable required APIs before creating resources like:
 - IAM policies
 
 ## Example Common APIs
-- `compute.googleapis.com` — Compute Engine
-- `storage.googleapis.com` — Cloud Storage
-- `iam.googleapis.com` — Identity and Access Management
-- `container.googleapis.com` — Kubernetes Engine
-- `cloudresourcemanager.googleapis.com` — Cloud Resource Manager
+- `compute.googleapis.com` - Compute Engine
+- `storage.googleapis.com` - Cloud Storage
+- `iam.googleapis.com` - Identity and Access Management
+- `container.googleapis.com` - Kubernetes Engine
+- `cloudresourcemanager.googleapis.com` - Cloud Resource Manager
 
 ---

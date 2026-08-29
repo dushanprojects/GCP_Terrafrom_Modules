@@ -54,6 +54,12 @@ resource "google_container_cluster" "gke_cluster" {
     channel = var.release_channel
   }
 
+  # Lets a Kubernetes service account act as a Google service account, so the
+  # pods do not read the credentials of the node from the metadata server
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
+
   master_authorized_networks_config {
     dynamic "cidr_blocks" {
       for_each = var.ip_whitelisting

@@ -53,6 +53,16 @@ resource "google_container_node_pool" "application_nodepools" {
     service_account = google_service_account.nodepool.email
     labels          = merge(var.common_labels, { nodepool = lookup(var.application_nodepools[count.index], "name", "nodepool-${count.index + 1}") })
     tags            = ["private-instances", "nodepools"]
+
+    # Keeps the node credentials away from the pods and turns off the metadata
+    # endpoints that do not check the query headers
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
+
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
   }
 
   lifecycle {

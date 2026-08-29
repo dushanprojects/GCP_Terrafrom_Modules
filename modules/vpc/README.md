@@ -53,6 +53,26 @@ module "vpc" {
 | `private_subnet_name` | The name of the private subnet         |
 
 
+## Tests
+
+This module has its own tests, written with the Terraform test framework. The tests sit in the `tests` directory of the module and use a mocked provider, so they need no GCP credentials, they make no API calls and they create nothing in GCP.
+
+Run them from this directory (`modules/vpc`):
+
+```
+terraform init -backend=false
+terraform test
+```
+
+The `init` is needed even though the provider is mocked, because Terraform reads the provider schema to check the resource arguments. Useful options while working on the module:
+
+```
+terraform test -verbose                        # show the plan behind every test case
+terraform test -filter=tests/subnets.tftest.hcl   # run a single test file
+```
+
+A failing test prints the message written on the assertion, so the output says what the module should have done rather than only which line failed.
+
 ## Requirements
 
 - [Terraform](https://www.terraform.io/) >= 1.0

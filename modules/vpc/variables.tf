@@ -8,6 +8,8 @@ variable "region" {
   description = "The GCP region where the VPC is created"
 }
 
+# Kept for the module interface, google_compute_network and google_compute_subnetwork do not support labels
+# tflint-ignore: terraform_unused_declarations
 variable "common_labels" {
   type        = map(any)
   description = "A map of key-value pairs to tag resources consistently"
@@ -35,6 +37,8 @@ variable "services_ip_cidr_range" {
   description = "Cluster's subnetwork range to use for service"
 }
 
+# Kept for the module interface, the GKE cluster module takes this range directly
+# tflint-ignore: terraform_unused_declarations
 variable "master_ipv4_cidr_range" {
   type        = string
   default     = ""

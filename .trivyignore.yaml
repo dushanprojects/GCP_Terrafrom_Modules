@@ -1,0 +1,28 @@
+# Findings that have been reviewed and are not fixed in the code, with the
+# reason and a date to look at them again. Anything not listed here is expected
+# to be fixed rather than ignored. Each entry is limited to the files it applies
+# to, so the same check still runs everywhere else.
+
+misconfigurations:
+  - id: AVD-GCP-0015
+    paths:
+      - "modules/db_mysql/main.tf"
+    statement: >-
+      The check asks for require_ssl on the Cloud SQL instance. Google
+      deprecated that argument and removed it from the provider in version 7,
+      so it cannot be set. The module sets its replacement,
+      ssl_mode = "ENCRYPTED_ONLY", which enforces the same thing.
+    expiredAt: 2027-03-01
+
+  - id: AVD-GCP-0048
+    paths:
+      - "modules/gke_regional_cluster/nodepool_gke_components.tf"
+      - "modules/gke_regional_cluster/nodepools_app.tf"
+    statement: >-
+      This reports the node config of the default node pool of the cluster.
+      The cluster sets remove_default_node_pool to true, so that pool is
+      deleted as soon as the cluster is built and never runs a workload.
+      Setting node_config on the cluster to satisfy the check would force the
+      cluster to be replaced. Both real node pools set
+      disable-legacy-endpoints to true in their own node config.
+    expiredAt: 2027-03-01

@@ -1,0 +1,22 @@
+# Trivy configuration used by the CI workflow and by local runs
+
+scan:
+  scanners:
+    - misconfig
+
+# Reviewed findings that are not fixed in the code, each one limited to the
+# files it applies to
+ignorefile: .trivyignore.yaml
+
+misconfiguration:
+  terraform:
+    # The examples call the modules through a relative path. Scanning the
+    # module sources once is enough
+    exclude-downloaded-modules: true
+
+severity:
+  - HIGH
+  - CRITICAL
+
+# Local runs report the findings without failing, the same as CI does
+exit-code: 0
