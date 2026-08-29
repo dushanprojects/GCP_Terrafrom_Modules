@@ -18,13 +18,21 @@ resource "google_compute_subnetwork" "private_subnet" {
   region                   = var.region
   private_ip_google_access = true
   purpose                  = "PRIVATE"
-  secondary_ip_range {
-    range_name    = "k8s-pod-range"
-    ip_cidr_range = var.pod_ip_cidr_range
+
+  dynamic "secondary_ip_range" {
+    for_each = var.pod_ip_cidr_range != "" ? [1] : []
+    content {
+      range_name    = "k8s-pod-range"
+      ip_cidr_range = var.pod_ip_cidr_range
+    }
   }
-  secondary_ip_range {
-    range_name    = "k8s-services-range"
-    ip_cidr_range = var.services_ip_cidr_range
+
+  dynamic "secondary_ip_range" {
+    for_each = var.services_ip_cidr_range != "" ? [1] : []
+    content {
+      range_name    = "k8s-services-range"
+      ip_cidr_range = var.services_ip_cidr_range
+    }
   }
 }
 
