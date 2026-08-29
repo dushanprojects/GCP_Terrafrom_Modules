@@ -8,7 +8,7 @@ resource "google_kms_crypto_key" "kms_key" {
 
 # Additional Role binding
 resource "google_kms_crypto_key_iam_member" "additional_bindings" {
-  for_each = { for x, binding in var.additional_iam_bindings : "${x}" => binding }
+  for_each = { for x, binding in var.additional_iam_bindings : tostring(x) => binding }
 
   crypto_key_id = google_kms_crypto_key.kms_key.id
   role          = each.value.role

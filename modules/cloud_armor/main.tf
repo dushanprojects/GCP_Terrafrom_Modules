@@ -16,7 +16,7 @@ resource "google_compute_security_policy" "this" {
 
   # Blocks the listed IP ranges
   dynamic "rule" {
-    for_each = { for x, range in var.denied_ip_ranges : "${x}" => range }
+    for_each = { for x, range in var.denied_ip_ranges : tostring(x) => range }
     content {
       action      = "deny(403)"
       priority    = 1000 + tonumber(rule.key)
@@ -32,7 +32,7 @@ resource "google_compute_security_policy" "this" {
 
   # Allows only the listed IP ranges when the default action is deny
   dynamic "rule" {
-    for_each = { for x, range in var.allowed_ip_ranges : "${x}" => range }
+    for_each = { for x, range in var.allowed_ip_ranges : tostring(x) => range }
     content {
       action      = "allow"
       priority    = 2000 + tonumber(rule.key)
@@ -48,7 +48,7 @@ resource "google_compute_security_policy" "this" {
 
   # Preconfigured WAF rules such as sqli, xss and lfi
   dynamic "rule" {
-    for_each = { for x, waf_rule in var.waf_rules : "${x}" => waf_rule }
+    for_each = { for x, waf_rule in var.waf_rules : tostring(x) => waf_rule }
     content {
       action      = rule.value.action
       priority    = 3000 + tonumber(rule.key)

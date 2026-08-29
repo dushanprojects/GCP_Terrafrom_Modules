@@ -44,7 +44,7 @@ resource "google_artifact_registry_repository" "this" {
 
 # Additional role bindings on the repository
 resource "google_artifact_registry_repository_iam_member" "additional_bindings" {
-  for_each = { for x, binding in var.additional_iam_bindings : "${x}" => binding }
+  for_each = { for x, binding in var.additional_iam_bindings : tostring(x) => binding }
 
   project    = google_artifact_registry_repository.this.project
   location   = google_artifact_registry_repository.this.location

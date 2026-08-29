@@ -67,7 +67,7 @@ resource "google_secret_manager_secret_iam_member" "accessors" {
 
 # Additional role bindings on the secret
 resource "google_secret_manager_secret_iam_member" "additional_bindings" {
-  for_each = { for x, binding in var.additional_iam_bindings : "${x}" => binding }
+  for_each = { for x, binding in var.additional_iam_bindings : tostring(x) => binding }
 
   secret_id = google_secret_manager_secret.this.secret_id
   role      = each.value.role
