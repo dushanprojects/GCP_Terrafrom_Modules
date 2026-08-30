@@ -121,3 +121,21 @@ variable "application_nodepools" {
   - node_taints (map)
   EOS
 }
+
+variable "monitoring_service" {
+  type        = string
+  default     = "monitoring.googleapis.com/kubernetes"
+  description = "The monitoring service the cluster sends its metrics to. Set to none to turn monitoring off"
+}
+
+variable "binary_authorization_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether the cluster enforces the Binary Authorization policy of the project"
+}
+
+variable "authenticator_security_group" {
+  type        = string
+  default     = null
+  description = "(Optional) The group used to map Kubernetes RBAC to your own directory, in the form gke-security-groups@yourdomain.com"
+}

@@ -30,7 +30,8 @@ module "gcs_kms_keys" {
 
 | Name                     | Description                                                                      | Type          | Required |
 |--------------------------|----------------------------------------------------------------------------------|---------------|----------|
-| `name`                   | List of KMS crypto key names                                                     | `list(string)`| Yes      |
+| `key_name`               | The name of the KMS crypto key                                                   | `string`      | Yes      |
+| `kms_ring_id`            | The ID of the key ring the key is created in                                     | `string`      | Yes      |
 | `rotation_period`        | Interval to auto-rotate and set a new primary CryptoKeyVersion (default 30 days) | `string`      | Optional |
 | `additional_iam_bindings`| Optional IAM bindings to apply to KMS key                                        | `list(object)`| Optional |
 | `common_labels`          | A map of key-value pairs to tag resources consistently                           | `map(string)` | Yes      |
@@ -40,9 +41,13 @@ module "gcs_kms_keys" {
 
 | Name   | Description                   | 
 |--------|-------------------------------|
-| `id`   | KMS crypto key name           |
-| `name` | Full ID of the KMS crypto key |
+| `id`   | Full ID of the KMS crypto key |
+| `name` | KMS crypto key name           |
 
+
+## Notes
+
+- The key is created with `prevent_destroy`, because Google does not allow a crypto key to be deleted and losing the Terraform state of a key means losing access to everything it encrypted. Remove the `lifecycle` block in `main.tf` before destroying a configuration that holds one.
 
 ## Requirements
 

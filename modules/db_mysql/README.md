@@ -122,6 +122,26 @@ module "mysql" {
 - **Deletion** - both `deletion_protection` (Terraform) and `api_deletion_protection_enabled` (API and Console) default to `true`. Both must be set to `false` before an instance can be destroyed.
 - **Passwords** - `root_password` and the `users` passwords land in Terraform state. Source them from Secret Manager or an equivalent rather than committing them.
 
+## Tests
+
+This module has its own tests, written with the Terraform test framework. The tests sit in the `tests` directory of the module and use a mocked provider, so they need no GCP credentials, they make no API calls and they create nothing in GCP.
+
+Run them from this directory (`modules/db_mysql`):
+
+```
+terraform init -backend=false
+terraform test
+```
+
+The `init` is needed even though the provider is mocked, because Terraform reads the provider schema to check the resource arguments. Useful options while working on the module:
+
+```
+terraform test -verbose                        # show the plan behind every test case
+terraform test -filter=tests/defaults.tftest.hcl   # run a single test file
+```
+
+A failing test prints the message written on the assertion, so the output says what the module should have done rather than only which line failed.
+
 ## Requirements
 
 - [Terraform](https://www.terraform.io/) >= 1.0

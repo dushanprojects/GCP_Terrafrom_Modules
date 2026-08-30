@@ -1,0 +1,124 @@
+name: Terraform
+
+# Runs on every pull request and on the main branch, so a change is checked
+# before it is merged
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  TERRAFORM_VERSION: 1.10.5
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Check the formatting of every file
+        run: terraform fmt -check -recursive -diff
+
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      # No credentials are needed. The backend is skipped and only the
+      # configuration itself is checked
+      - name: Validate every module and example
+        run: |
+          set -e
+          status=0
+          for dir in $(find modules examples -name "*.tf" -exec dirname {} \; | sort -u); do
+            echo "::group::${dir}"
+            if terraform -chdir="${dir}" init -backend=false -input=false -no-color; then
+              terraform -chdir="${dir}" validate -no-color || status=1
+            else
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $status
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      # The tests use a mocked provider, so they need no GCP credentials and
+      # create nothing
+      - name: Run the module tests
+        run: |
+          set -e
+          status=0
+          for dir in $(find modules -type d -name tests | sort); do
+            module=$(dirname "${dir}")
+            echo "::group::${module}"
+            terraform -chdir="${module}" init -backend=false -input=false -no-color
+            terraform -chdir="${module}" test -no-color || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: Install the TFLint plugins
+        run: tflint --init
+
+      - name: Lint every module and example
+        run: tflint --recursive --config "${GITHUB_WORKSPACE}/.tflint.hcl" --format compact
+
+  # Both scanners block the build. Two Checkov checks cannot be satisfied and
+  # are skipped in the code itself, next to the resource they apply to, with the
+  # reason written in the skip. Trivy has no suppressions at all
+  security:
+    name: Security scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan the configuration with Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: terraform
+          quiet: true
+          output_format: cli
+          soft_fail: false
+
+      - name: Scan the configuration with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          trivy-config: trivy.yaml

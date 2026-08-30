@@ -39,6 +39,7 @@ module "cloud_function_check_unattached_volumes" {
 
 | Name                       | Description                                                                 | Type          | Required |
 |----------------------------|-----------------------------------------------------------------------------|---------------|----------|
+| `region`                   | The region the function and its artifact bucket are created in              | `string`      | Yes      |
 | `name`                     | A user-defined name of the function. Function names must be unique globally | `string`      | Yes      |
 | `description`              | Description of the cloud function.                                          | `string`      | Optional |
 | `runtime`                  | The runtime in which the function is going to run                           | `string`      | Yes      |
@@ -52,8 +53,15 @@ module "cloud_function_check_unattached_volumes" {
 | `time_zone`                | Time zone for the cron schedule (e.g. UTC)                                  | `string`      | Optional |
 | `environment_variables`    | A set of key/value environment variable pairs to assign to the function.    | `map(string)` | Optional |
 | `additional_iam_bindings`  | Additional IAM bindings for invoker service account                         | `list(string)`| Optional |
+| `ingress_settings`         | Which traffic reaches the function (ALLOW_ALL\|ALLOW_INTERNAL_ONLY\|ALLOW_INTERNAL_AND_GCLB) | `string`      | Optional |
+| `log_bucket_name`          | The bucket that will receive the access logs of the artifact bucket         | `string`      | Optional |
 | `common_labels`            | A map of key-value pairs to tag resources consistently                      | `map(string)` | Optional |
 
+
+## Notes
+
+- `ingress_settings` defaults to `ALLOW_INTERNAL_ONLY`, so the function cannot be called from the public internet. A Cloud Scheduler job in the same project counts as internal traffic, so the scheduled trigger keeps working. Set it to `ALLOW_ALL` if the function has to answer requests from outside Google Cloud.
+- The artifact bucket holding the deployment package is closed to the public, uses uniform bucket level access, and keeps previous versions so a deployment can be rolled back.
 
 ## Outputs
 

@@ -50,6 +50,22 @@ resource "google_container_node_pool" "gke_managed_components" {
     service_account = google_service_account.nodepool.email
     labels          = merge(var.common_labels, { nodepool = "gke-managed-components" })
     tags            = ["private-instances", "nodepools"]
+
+    # Keeps the node credentials away from the pods and turns off the metadata
+    # endpoints that do not check the query headers
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
+
+    metadata = {
+      disable-legacy-endpoints = true
+    }
+
+    # The cluster runs shielded nodes, this turns on secure boot for them
+    shielded_instance_config {
+      enable_secure_boot          = true
+      enable_integrity_monitoring = true
+    }
   }
 
   lifecycle {

@@ -3,8 +3,10 @@ resource "google_storage_bucket" "this" {
   location                 = var.location
   force_destroy            = var.force_destroy_enabled
   public_access_prevention = var.public_access_prevention
-  storage_class            = var.storage_class
-  labels                   = var.common_labels
+  # Access is controlled by IAM alone, rather than by per object ACLs
+  uniform_bucket_level_access = var.uniform_bucket_level_access
+  storage_class               = var.storage_class
+  labels                      = var.common_labels
 
   versioning {
     enabled = var.versioning_enabled

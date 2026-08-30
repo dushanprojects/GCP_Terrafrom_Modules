@@ -33,6 +33,7 @@ module "gcs" {
 | `force_destroy_enabled`   | When deleting a bucket, this boolean option will delete all contained objects | `bool`        | Optional |
 | `log_bucket_name`         | The bucket that will receive log objects                                      | `string`      | Optional |
 | `versioning_enabled`      | Bucket versioning enabled|disabled                                            | `bool`        | Optional |
+| `uniform_bucket_level_access` | Whether access is controlled by IAM alone rather than by per object ACLs  | `bool`        | Optional |
 | `encryption_kms_key_id`   | The bucket's encryption KMS key id                                            | `string`      | Optional |
 | `lifecycle_rules`         | List of lifecycle rules for the bucket                                        | `list(object)`| Optional |
 | `common_labels`           | A map of key-value pairs to tag resources consistently                        | `map(string)` | Optional |
@@ -46,6 +47,26 @@ module "gcs" {
 | `name`      | Name of the storage bucket                                   |
 | `self_link` | The URI of the created resource                              |
 
+
+## Tests
+
+This module has its own tests, written with the Terraform test framework. The tests sit in the `tests` directory of the module and use a mocked provider, so they need no GCP credentials, they make no API calls and they create nothing in GCP.
+
+Run them from this directory (`modules/storage_bucket`):
+
+```
+terraform init -backend=false
+terraform test
+```
+
+The `init` is needed even though the provider is mocked, because Terraform reads the provider schema to check the resource arguments. Useful options while working on the module:
+
+```
+terraform test -verbose                        # show the plan behind every test case
+terraform test -filter=tests/defaults.tftest.hcl   # run a single test file
+```
+
+A failing test prints the message written on the assertion, so the output says what the module should have done rather than only which line failed.
 
 ## Requirements
 

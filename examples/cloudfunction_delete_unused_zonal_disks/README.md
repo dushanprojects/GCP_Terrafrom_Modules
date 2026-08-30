@@ -1,5 +1,5 @@
 
-# Google Cloud Function Example – Delete Unattached Zonal Disks
+# Google Cloud Function Example - Delete Unattached Zonal Disks
 
 This Google Cloud Function example identifies and deletes unattached (or orphaned) zonal persistent disks in your GCP project. It helps monitor unused resources and optimize cloud costs by cleaning up disks that are no longer in use.
 
@@ -52,7 +52,7 @@ These values are required to properly target the correct project and region for 
 ## Terraform commands
 
 To deploy this example, run the following commands from within this directory:
-- `terraform init` – Initializes the working directory and downloads necessary providers.
-- `terraform plan` – Previews the changes Terraform will make to your infrastructure.
-- `terraform apply` – Applies the planned infrastructure changes.
-- `terraform destroy` – Tears down all resources created by this configuration.
+- `terraform init` - Initializes the working directory and downloads necessary providers.
+- `terraform plan` - Previews the changes Terraform will make to your infrastructure.
+- `terraform apply` - Applies the planned infrastructure changes.
+- `terraform destroy` - Tears down all resources created by this configuration.

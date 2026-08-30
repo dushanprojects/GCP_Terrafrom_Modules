@@ -1,4 +1,5 @@
 resource "google_sql_database_instance" "mysql" {
+  # checkov:skip=CKV_GCP_6:The check looks for require_ssl, which Google removed from the provider in version 7. The instance enforces encryption through ssl_mode below
   name                 = var.name
   region               = var.region
   database_version     = var.database_version

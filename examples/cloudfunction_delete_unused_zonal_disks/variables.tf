@@ -5,12 +5,6 @@ variable "project_id" {
   sensitive   = true
 }
 
-variable "environment" {
-  type        = string
-  default     = "development"
-  description = "The environment where the cluster is deployed (e.g., dev, prod)"
-}
-
 variable "region" {
   type        = string
   default     = "us-east1"

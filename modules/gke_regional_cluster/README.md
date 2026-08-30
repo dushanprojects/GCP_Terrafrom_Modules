@@ -78,6 +78,10 @@ module "cluster" {
 | `private_subnet_id`               | The ID of the private subnet used for internal communication.     | `string`       | Yes      |
 | `vpc_id`                          | The ID of the custom VPC where the cluster will be deployed.      | `string`       | Yes      |
 | `custom_vpc_used`                 | Indicates if a custom VPC is used; affects pod and service naming | `bool`         | Optional |
+| `release_channel` | The GKE release channel the cluster follows | `string` | Optional |
+| `binary_authorization_enabled` | Whether the cluster enforces the Binary Authorization policy of the project | `bool` | Optional |
+| `authenticator_security_group` | The group used to map Kubernetes RBAC to your own directory | `string` | Optional |
+| `monitoring_service` | The monitoring service the cluster sends its metrics to | `string` | Optional |
 | `common_labels`                   | A map of common labels to apply to all resources.                 | `map(any)`     | Optional |
 | `private_instance_tags`           | A list of tags used to allow private instances in firewall rules  | `list(string)` | Optional |
 | `ip_whitelisting`                 | A list of authorized CIDR blocks for network access control.      | `list(object)` | Optional |

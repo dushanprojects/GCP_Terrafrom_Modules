@@ -23,6 +23,7 @@ module "gcs_kms_key_ring" {
 | `name`            | The name of the KMS Key Ring                           | `string`      | Yes      |
 | `location`        | The location for the KeyRing                           | `string`      | Yes      |
 | `common_labels`   | A map of key-value pairs to tag resources consistently | `map(string)` | Optional |
+| `rotation_period` | Kept for the module interface. Rotation is set on the KMS key rather than on the key ring | `string` | Optional |
 
 ## Outputs
 

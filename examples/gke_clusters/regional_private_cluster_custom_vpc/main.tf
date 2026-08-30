@@ -9,6 +9,7 @@ module "enable_google_service_apis" {
   apis = [
     "artifactregistry.googleapis.com",
     "container.googleapis.com",
+    "binaryauthorization.googleapis.com",
     "compute.googleapis.com",
     "iam.googleapis.com",
     "monitoring.googleapis.com",
