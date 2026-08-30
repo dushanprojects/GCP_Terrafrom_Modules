@@ -19,6 +19,15 @@ resource "google_compute_subnetwork" "private_subnet" {
   private_ip_google_access = true
   purpose                  = "PRIVATE"
 
+  dynamic "log_config" {
+    for_each = var.flow_logs_enabled ? [1] : []
+    content {
+      aggregation_interval = var.flow_logs_aggregation_interval
+      flow_sampling        = var.flow_logs_sampling_rate
+      metadata             = "INCLUDE_ALL_METADATA"
+    }
+  }
+
   dynamic "secondary_ip_range" {
     for_each = var.pod_ip_cidr_range != "" ? [1] : []
     content {

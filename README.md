@@ -145,6 +145,26 @@ Run all of them locally before pushing:
 ./bin/quality_checks.sh
 ```
 
+### Findings that are accepted for now
+
+Both scanners fail the build on anything new. The findings below were reviewed and left as they are, so they are recorded in `.checkov.baseline` and `.trivyignore.yaml` rather than fixed. Work through them and shrink the list over time.
+
+| Check                    | Where                  | Why it is accepted                                                                                   |
+|--------------------------|------------------------|------------------------------------------------------------------------------------------------------|
+| CKV_GCP_6, AVD-GCP-0015  | `db_mysql`             | The check asks for `require_ssl`, which Google removed from the provider. The module sets `ssl_mode` instead |
+| CKV_GCP_12               | `gke_regional_cluster` | The cluster uses Dataplane V2, which enforces network policy itself, so the separate add on is off    |
+| CKV_GCP_69, AVD-GCP-0048 | `gke_regional_cluster` | Reports the default node pool, which is removed as soon as the cluster is built                       |
+| CKV_GCP_13               | `gke_regional_cluster` | Client certificate authentication is already off by default. Setting it explicitly replaces the cluster |
+| CKV_GCP_61, CKV_GCP_26   | `gke_regional_cluster`, `vpc` | Flow logs are charged per GB. The VPC module can turn them on with `flow_logs_enabled`          |
+| CKV_GCP_65               | `gke_regional_cluster` | Needs a `gke-security-groups` group that belongs to your own domain                                   |
+| CKV_GCP_66               | `gke_regional_cluster` | Binary Authorization needs an attestation policy that is set up outside this repository               |
+| CKV_GCP_74               | `vpc`                  | Reports the public subnet, which does not need private access to the Google APIs                      |
+| CKV_GCP_78               | `storage_bucket`       | Versioning is off by default because it is charged per version. Set `versioning_enabled` to turn it on |
+| CKV_GCP_82               | `kms_key`              | Google does not allow a key ring or a key to be deleted, and `prevent_destroy` would block every destroy |
+| CKV_GCP_106              | `vpc`                  | Port 80 is open to the internet on purpose, so a public web tier can redirect to HTTPS. The ports are set by `public_allowed_tcp_ports` |
+
+When a finding is fixed, rebuild the baseline with `checkov --directory . --framework terraform --quiet --create-baseline`.
+
 The script skips TFLint and the security scanners when they are not installed, so the format, validate and test checks still run without them.
 
 ## Requirements

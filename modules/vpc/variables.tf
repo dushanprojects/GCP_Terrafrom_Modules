@@ -56,3 +56,33 @@ variable "private_instance_tags" {
   description = "Target Private VM instance Tags to be allowed in Firewall rules"
   default     = ["private-instances", "nodepools"]
 }
+
+variable "public_allowed_tcp_ports" {
+  type        = list(string)
+  default     = ["80", "443"]
+  description = "The TCP ports the public subnet resources accept traffic on from the internet"
+}
+
+variable "backend_allowed_tcp_ports" {
+  type        = list(string)
+  default     = ["80", "443", "30000-32767", "22"]
+  description = "The TCP ports the private subnet resources accept traffic on from the public subnet"
+}
+
+variable "flow_logs_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether VPC flow logs are collected for the private subnet. The logs are charged per GB"
+}
+
+variable "flow_logs_aggregation_interval" {
+  type        = string
+  default     = "INTERVAL_5_SEC"
+  description = "How often the flow logs are aggregated"
+}
+
+variable "flow_logs_sampling_rate" {
+  type        = number
+  default     = 0.5
+  description = "The share of the traffic written to the flow logs, from 0 to 1"
+}

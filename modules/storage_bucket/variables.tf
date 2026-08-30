@@ -74,3 +74,9 @@ variable "lifecycle_rules" {
   }))
   default = []
 }
+
+variable "uniform_bucket_level_access" {
+  type        = bool
+  default     = true
+  description = "Whether access is controlled by IAM alone rather than by per object ACLs"
+}

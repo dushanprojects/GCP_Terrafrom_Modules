@@ -48,3 +48,42 @@ run "gke_ranges_are_added_when_given" {
     error_message = "The pod range must keep its name so existing clusters are not rebuilt"
   }
 }
+
+run "no_ephemeral_port_range_is_open_to_the_internet" {
+  command = plan
+
+  assert {
+    condition = alltrue([
+      for rule in google_compute_firewall.allow_public_traffic.allow :
+      alltrue([for port in rule.ports : !strcontains(port, "1024-")])
+    ])
+    error_message = "The public firewall rule must not open the ephemeral port range to the internet"
+  }
+
+  assert {
+    condition     = google_compute_firewall.allow_public_traffic.source_ranges == toset(["0.0.0.0/0"])
+    error_message = "The public rule is the only rule that accepts traffic from the internet"
+  }
+}
+
+run "flow_logs_are_off_by_default_and_can_be_turned_on" {
+  command = plan
+
+  assert {
+    condition     = length(google_compute_subnetwork.private_subnet.log_config) == 0
+    error_message = "Flow logs must stay off unless they are asked for, because they are charged per GB"
+  }
+}
+
+run "flow_logs_are_created_when_enabled" {
+  command = plan
+
+  variables {
+    flow_logs_enabled = true
+  }
+
+  assert {
+    condition     = google_compute_subnetwork.private_subnet.log_config[0].flow_sampling == 0.5
+    error_message = "The flow logs must use the sampling rate given"
+  }
+}

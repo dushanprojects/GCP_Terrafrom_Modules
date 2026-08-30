@@ -65,3 +65,12 @@ run "lifecycle_rules_are_created_from_the_input" {
     error_message = "The encryption block must be set when a KMS key is given"
   }
 }
+
+run "uniform_bucket_level_access_is_on_by_default" {
+  command = plan
+
+  assert {
+    condition     = google_storage_bucket.this.uniform_bucket_level_access == true
+    error_message = "Access must be controlled by IAM alone rather than by per object ACLs"
+  }
+}

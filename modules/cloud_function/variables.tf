@@ -84,3 +84,15 @@ variable "common_labels" {
   default     = {}
   description = "A map of key-value pairs to tag resources consistently - Optional"
 }
+
+variable "ingress_settings" {
+  type        = string
+  default     = "ALLOW_INTERNAL_ONLY"
+  description = "Which traffic reaches the function (ALLOW_ALL|ALLOW_INTERNAL_ONLY|ALLOW_INTERNAL_AND_GCLB)"
+}
+
+variable "log_bucket_name" {
+  type        = string
+  default     = null
+  description = "(Optional) The bucket that will receive the access logs of the artifact bucket"
+}

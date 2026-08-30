@@ -43,7 +43,8 @@ else
 fi
 
 if command -v checkov >/dev/null 2>&1; then
-  checkov --directory . --framework terraform --quiet --compact || status=1
+  # Compares against the baseline, so only new findings fail, the same as CI does
+  checkov --directory . --framework terraform --quiet --compact --baseline .checkov.baseline || status=1
 else
   echo "checkov is not installed, skipping"
 fi

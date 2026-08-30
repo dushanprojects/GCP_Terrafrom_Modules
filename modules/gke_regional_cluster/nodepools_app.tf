@@ -63,6 +63,12 @@ resource "google_container_node_pool" "application_nodepools" {
     metadata = {
       disable-legacy-endpoints = "true"
     }
+
+    # The cluster runs shielded nodes, this turns on secure boot for them
+    shielded_instance_config {
+      enable_secure_boot          = true
+      enable_integrity_monitoring = true
+    }
   }
 
   lifecycle {

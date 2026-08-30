@@ -121,3 +121,9 @@ variable "application_nodepools" {
   - node_taints (map)
   EOS
 }
+
+variable "monitoring_service" {
+  type        = string
+  default     = "monitoring.googleapis.com/kubernetes"
+  description = "The monitoring service the cluster sends its metrics to. Set to none to turn monitoring off"
+}

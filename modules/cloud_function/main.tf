@@ -2,6 +2,25 @@
 resource "google_storage_bucket" "artifact" {
   name     = "${var.name}-cloudfunctions-artifact-bucket"
   location = var.region
+  labels   = var.common_labels
+
+  # The bucket only holds the deployment package of the function, so it is
+  # closed to the public and access is controlled by IAM alone
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+
+  # Keeps the previous packages, so a deployment can be rolled back
+  versioning {
+    enabled = true
+  }
+
+  dynamic "logging" {
+    for_each = var.log_bucket_name != null ? [1] : []
+    content {
+      log_bucket        = var.log_bucket_name
+      log_object_prefix = var.name
+    }
+  }
 }
 
 resource "google_storage_bucket_object" "archive" {
@@ -18,6 +37,7 @@ resource "google_cloudfunctions_function" "function" {
   available_memory_mb          = var.available_memory_mb
   trigger_http                 = true
   https_trigger_security_level = "SECURE_ALWAYS"
+  ingress_settings             = var.ingress_settings
   timeout                      = var.timeout
   kms_key_name                 = var.kms_key_name
   entry_point                  = var.entry_point

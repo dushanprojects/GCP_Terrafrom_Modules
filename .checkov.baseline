@@ -1,0 +1,87 @@
+{
+    "failed_checks": [
+        {
+            "file": "/modules/db_mysql/main.tf",
+            "findings": [
+                {
+                    "resource": "module.mysql.google_sql_database_instance.mysql",
+                    "check_ids": [
+                        "CKV_GCP_6"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "/modules/gke_regional_cluster/cluster.tf",
+            "findings": [
+                {
+                    "resource": "module.regional_cluster_default_vpc.google_container_cluster.gke_cluster",
+                    "check_ids": [
+                        "CKV_GCP_12",
+                        "CKV_GCP_13",
+                        "CKV_GCP_61",
+                        "CKV_GCP_65",
+                        "CKV_GCP_66",
+                        "CKV_GCP_69"
+                    ]
+                },
+                {
+                    "resource": "module.regional_private_cluster_custom_vpc.google_container_cluster.gke_cluster",
+                    "check_ids": [
+                        "CKV_GCP_12",
+                        "CKV_GCP_13",
+                        "CKV_GCP_61",
+                        "CKV_GCP_65",
+                        "CKV_GCP_66",
+                        "CKV_GCP_69"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "/modules/kms_key/main.tf",
+            "findings": [
+                {
+                    "resource": "module.gcs_kms_key.google_kms_crypto_key.kms_key",
+                    "check_ids": [
+                        "CKV_GCP_82"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "/modules/storage_bucket/main.tf",
+            "findings": [
+                {
+                    "resource": "module.gcs.google_storage_bucket.this",
+                    "check_ids": [
+                        "CKV_GCP_78"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "/modules/vpc/firewall.tf",
+            "findings": [
+                {
+                    "resource": "module.vpc.google_compute_firewall.allow_public_traffic",
+                    "check_ids": [
+                        "CKV_GCP_106"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "/modules/vpc/vpc.tf",
+            "findings": [
+                {
+                    "resource": "module.vpc.google_compute_subnetwork.public_subnet",
+                    "check_ids": [
+                        "CKV_GCP_26",
+                        "CKV_GCP_74"
+                    ]
+                }
+            ]
+        }
+    ]
+}

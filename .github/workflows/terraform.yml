@@ -96,10 +96,10 @@ jobs:
       - name: Lint every module and example
         run: tflint --recursive --config "${GITHUB_WORKSPACE}/.tflint.hcl" --format compact
 
-  # Trivy blocks the build. Its findings have been reviewed, the ones worth
-  # fixing are fixed, and the two that are not are recorded in .trivyignore.yaml
-  # with a reason and a review date. Checkov only reports for now, because its
-  # findings have not been reviewed yet. Once they have, set soft_fail to false
+  # Both scanners block the build. Trivy skips the findings recorded in
+  # .trivyignore.yaml. Checkov compares against .checkov.baseline, so the known
+  # findings listed in the README are allowed through while anything new fails
+  # the build. Shrink the baseline as the remaining findings are worked through
   security:
     name: Security scan
     runs-on: ubuntu-latest
@@ -113,7 +113,8 @@ jobs:
           framework: terraform
           quiet: true
           output_format: cli
-          soft_fail: true
+          baseline: .checkov.baseline
+          soft_fail: false
 
       - name: Scan the configuration with Trivy
         uses: aquasecurity/trivy-action@v0.36.0

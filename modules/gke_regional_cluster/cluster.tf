@@ -8,7 +8,8 @@ resource "google_container_cluster" "gke_cluster" {
   enable_multi_networking = true
   enable_shielded_nodes   = true
   datapath_provider       = "ADVANCED_DATAPATH"
-  monitoring_service      = "none"
+  monitoring_service      = var.monitoring_service
+  resource_labels         = var.common_labels
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
