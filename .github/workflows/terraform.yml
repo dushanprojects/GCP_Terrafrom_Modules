@@ -96,9 +96,9 @@ jobs:
       - name: Lint every module and example
         run: tflint --recursive --config "${GITHUB_WORKSPACE}/.tflint.hcl" --format compact
 
-  # Both scanners block the build. The handful of checks that cannot be
-  # satisfied are skipped in the code itself, next to the resource they apply
-  # to, with the reason written in the skip
+  # Both scanners block the build. Two Checkov checks cannot be satisfied and
+  # are skipped in the code itself, next to the resource they apply to, with the
+  # reason written in the skip. Trivy has no suppressions at all
   security:
     name: Security scan
     runs-on: ubuntu-latest

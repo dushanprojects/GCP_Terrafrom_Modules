@@ -23,7 +23,7 @@ resource "google_container_cluster" "gke_cluster" {
   # exists briefly, so it is hardened the same way as the real node pools
   node_config {
     metadata = {
-      disable-legacy-endpoints = "true"
+      disable-legacy-endpoints = true
     }
 
     workload_metadata_config {

@@ -58,7 +58,7 @@ resource "google_container_node_pool" "gke_managed_components" {
     }
 
     metadata = {
-      disable-legacy-endpoints = "true"
+      disable-legacy-endpoints = true
     }
 
     # The cluster runs shielded nodes, this turns on secure boot for them

@@ -4,10 +4,6 @@ scan:
   scanners:
     - misconfig
 
-# Reviewed findings that are not fixed in the code, each one limited to the
-# files it applies to
-ignorefile: .trivyignore.yaml
-
 misconfiguration:
   terraform:
     # The examples call the modules through a relative path. Scanning the
