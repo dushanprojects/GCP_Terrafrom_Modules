@@ -66,24 +66,36 @@ run "no_ephemeral_port_range_is_open_to_the_internet" {
   }
 }
 
-run "flow_logs_are_off_by_default_and_can_be_turned_on" {
+run "flow_logs_are_collected_by_default" {
   command = plan
-
-  assert {
-    condition     = length(google_compute_subnetwork.private_subnet.log_config) == 0
-    error_message = "Flow logs must stay off unless they are asked for, because they are charged per GB"
-  }
-}
-
-run "flow_logs_are_created_when_enabled" {
-  command = plan
-
-  variables {
-    flow_logs_enabled = true
-  }
 
   assert {
     condition     = google_compute_subnetwork.private_subnet.log_config[0].flow_sampling == 0.5
-    error_message = "The flow logs must use the sampling rate given"
+    error_message = "The private subnet must collect flow logs by default"
+  }
+}
+
+run "flow_logs_can_be_turned_off_where_they_cost_too_much" {
+  command = plan
+
+  variables {
+    flow_logs_enabled = false
+  }
+
+  assert {
+    condition     = length(google_compute_subnetwork.private_subnet.log_config) == 0
+    error_message = "No flow logs must be collected when they are turned off"
+  }
+}
+
+run "only_https_reaches_the_public_subnet_by_default" {
+  command = plan
+
+  assert {
+    condition = alltrue([
+      for rule in google_compute_firewall.allow_public_traffic.allow :
+      length(rule.ports) == 1 && contains(rule.ports, "443")
+    ])
+    error_message = "Only HTTPS must reach the public subnet from the internet unless another port is asked for"
   }
 }

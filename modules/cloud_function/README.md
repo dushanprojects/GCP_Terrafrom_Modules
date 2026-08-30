@@ -39,6 +39,7 @@ module "cloud_function_check_unattached_volumes" {
 
 | Name                       | Description                                                                 | Type          | Required |
 |----------------------------|-----------------------------------------------------------------------------|---------------|----------|
+| `region`                   | The region the function and its artifact bucket are created in              | `string`      | Yes      |
 | `name`                     | A user-defined name of the function. Function names must be unique globally | `string`      | Yes      |
 | `description`              | Description of the cloud function.                                          | `string`      | Optional |
 | `runtime`                  | The runtime in which the function is going to run                           | `string`      | Yes      |

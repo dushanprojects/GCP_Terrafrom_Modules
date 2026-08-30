@@ -4,6 +4,12 @@ resource "google_kms_crypto_key" "kms_key" {
   key_ring        = var.kms_ring_id
   rotation_period = var.rotation_period
   labels          = var.common_labels
+
+  # Google does not allow a crypto key to be deleted, and losing the Terraform
+  # state of a key means losing access to everything it encrypted
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # Additional Role binding

@@ -74,3 +74,12 @@ run "uniform_bucket_level_access_is_on_by_default" {
     error_message = "Access must be controlled by IAM alone rather than by per object ACLs"
   }
 }
+
+run "versioning_is_on_by_default" {
+  command = plan
+
+  assert {
+    condition     = google_storage_bucket.this.versioning[0].enabled == true
+    error_message = "Versioning must be on by default, so an overwritten object can be recovered"
+  }
+}

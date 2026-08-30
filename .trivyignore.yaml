@@ -1,7 +1,7 @@
 # Findings that have been reviewed and are not fixed in the code, with the
-# reason and a date to look at them again. Anything not listed here is expected
-# to be fixed rather than ignored. Each entry is limited to the files it applies
-# to, so the same check still runs everywhere else.
+# reason and a date to look at them again. Each entry is limited to the files it
+# applies to, so the same check still runs everywhere else. Everything else is
+# expected to be fixed rather than ignored.
 
 misconfigurations:
   - id: AVD-GCP-0015
@@ -19,10 +19,8 @@ misconfigurations:
       - "modules/gke_regional_cluster/nodepool_gke_components.tf"
       - "modules/gke_regional_cluster/nodepools_app.tf"
     statement: >-
-      This reports the node config of the default node pool of the cluster.
-      The cluster sets remove_default_node_pool to true, so that pool is
-      deleted as soon as the cluster is built and never runs a workload.
-      Setting node_config on the cluster to satisfy the check would force the
-      cluster to be replaced. Both real node pools set
-      disable-legacy-endpoints to true in their own node config.
+      Both node pools and the short lived default node pool of the cluster set
+      disable-legacy-endpoints to true in their node config. Checkov reads the
+      same setting and passes, so this is a limitation of how this check reads
+      the metadata map rather than a gap in the configuration.
     expiredAt: 2027-03-01

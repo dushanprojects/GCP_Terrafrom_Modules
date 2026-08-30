@@ -4,11 +4,23 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_subnetwork" "public_subnet" {
-  name                     = "${var.name}-public-subnet"
-  network                  = google_compute_network.vpc.id
-  ip_cidr_range            = var.public_ip_cidr_range
-  region                   = var.region
-  private_ip_google_access = false
+  name          = "${var.name}-public-subnet"
+  network       = google_compute_network.vpc.id
+  ip_cidr_range = var.public_ip_cidr_range
+  region        = var.region
+
+  # Lets the instances reach the Google APIs over internal addresses rather
+  # than going out through their public address
+  private_ip_google_access = true
+
+  dynamic "log_config" {
+    for_each = var.flow_logs_enabled ? [1] : []
+    content {
+      aggregation_interval = var.flow_logs_aggregation_interval
+      flow_sampling        = var.flow_logs_sampling_rate
+      metadata             = "INCLUDE_ALL_METADATA"
+    }
+  }
 }
 
 resource "google_compute_subnetwork" "private_subnet" {

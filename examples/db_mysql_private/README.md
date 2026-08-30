@@ -68,10 +68,10 @@ These values are required to properly target the correct project and region for 
 
 ## Terraform commands
 To deploy this example, run the following commands from within this directory:
-- `terraform init` – Initializes the working directory and downloads necessary providers.
-- `terraform plan` – Previews the changes Terraform will make to your infrastructure.
-- `terraform apply` – Applies the planned infrastructure changes.
-- `terraform destroy` – Tears down all resources created by this configuration.
+- `terraform init` - Initializes the working directory and downloads necessary providers.
+- `terraform plan` - Previews the changes Terraform will make to your infrastructure.
+- `terraform apply` - Applies the planned infrastructure changes.
+- `terraform destroy` - Tears down all resources created by this configuration.
 
 The instance is only reachable over private IP, so connect from a VM in the VPC, or through the Cloud SQL Auth Proxy:
 - `cloud-sql-proxy $(terraform output -raw mysql_connection_name) --private-ip`

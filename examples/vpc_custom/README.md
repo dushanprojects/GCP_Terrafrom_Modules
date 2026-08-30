@@ -43,7 +43,7 @@ These values are required to properly target the correct project and region for 
 
 ## Terraform commands
 To deploy this example, run the following commands from within this directory:
-- `terraform init` – Initializes the working directory and downloads necessary providers.
-- `terraform plan` – Previews the changes Terraform will make to your infrastructure.
-- `terraform apply` – Applies the planned infrastructure changes.
-- `terraform destroy` – Tears down all resources created by this configuration.
+- `terraform init` - Initializes the working directory and downloads necessary providers.
+- `terraform plan` - Previews the changes Terraform will make to your infrastructure.
+- `terraform apply` - Applies the planned infrastructure changes.
+- `terraform destroy` - Tears down all resources created by this configuration.

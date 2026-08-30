@@ -85,6 +85,8 @@ Feel free to customize them according to your needs.
 ```
 modules/    The reusable modules. Each one holds main.tf, variables.tf, outputs.tf and a README
 examples/   Complete working setups that call the modules the way they are normally used
+bin/        The script that runs the same checks as the CI workflow
+docs/       Notes kept by the maintainers of this repository
 ```
 
 ## Getting started
@@ -129,43 +131,25 @@ The `init` is needed even though the provider is mocked, because Terraform reads
 
 ## Quality checks
 
-The checks below run on every pull request through the workflow in `.github/workflows/terraform.yml`.
+Every change is checked by the workflow in `.github/workflows/terraform.yml`, which runs on each pull request and on the main branch.
 
-| Check    | What it does                                                                    |
-|----------|---------------------------------------------------------------------------------|
-| Format   | `terraform fmt -check -recursive` over the whole repository                      |
-| Validate | `terraform validate` in every module and example                                 |
-| Test     | `terraform test` in every module that has a `tests` directory                    |
-| Lint     | TFLint with the Terraform and Google rule sets, configured in `.tflint.hcl`      |
-| Security | Checkov and Trivy scan the configuration for insecure settings                   |
+| Check    | Tool                        | What it does                                                              |
+|----------|-----------------------------|---------------------------------------------------------------------------|
+| Format   | `terraform fmt`             | Checks that every file is formatted the same way                          |
+| Validate | `terraform validate`        | Checks that every module and example is valid Terraform                   |
+| Test     | `terraform test`            | Runs the tests of each module against a mocked provider                   |
+| Lint     | [TFLint](https://github.com/terraform-linters/tflint) | Checks for deprecated syntax, unused declarations and GCP specific mistakes, using the Terraform and Google rule sets in `.tflint.hcl` |
+| Security | [Checkov](https://www.checkov.io/) and [Trivy](https://trivy.dev/) | Scan the configuration for insecure settings such as open firewall rules, public buckets and missing encryption |
 
-Run all of them locally before pushing:
+Two security scanners are used because they carry different rule sets and each finds things the other misses. Both fail the build on any finding. The few checks that cannot be satisfied are skipped in the module source, next to the resource they apply to, with the reason written in the skip.
+
+Run the same checks locally before pushing:
 
 ```
 ./bin/quality_checks.sh
 ```
 
-### Findings that are accepted for now
-
-Both scanners fail the build on anything new. The findings below were reviewed and left as they are, so they are recorded in `.checkov.baseline` and `.trivyignore.yaml` rather than fixed. Work through them and shrink the list over time.
-
-| Check                    | Where                  | Why it is accepted                                                                                   |
-|--------------------------|------------------------|------------------------------------------------------------------------------------------------------|
-| CKV_GCP_6, AVD-GCP-0015  | `db_mysql`             | The check asks for `require_ssl`, which Google removed from the provider. The module sets `ssl_mode` instead |
-| CKV_GCP_12               | `gke_regional_cluster` | The cluster uses Dataplane V2, which enforces network policy itself, so the separate add on is off    |
-| CKV_GCP_69, AVD-GCP-0048 | `gke_regional_cluster` | Reports the default node pool, which is removed as soon as the cluster is built                       |
-| CKV_GCP_13               | `gke_regional_cluster` | Client certificate authentication is already off by default. Setting it explicitly replaces the cluster |
-| CKV_GCP_61, CKV_GCP_26   | `gke_regional_cluster`, `vpc` | Flow logs are charged per GB. The VPC module can turn them on with `flow_logs_enabled`          |
-| CKV_GCP_65               | `gke_regional_cluster` | Needs a `gke-security-groups` group that belongs to your own domain                                   |
-| CKV_GCP_66               | `gke_regional_cluster` | Binary Authorization needs an attestation policy that is set up outside this repository               |
-| CKV_GCP_74               | `vpc`                  | Reports the public subnet, which does not need private access to the Google APIs                      |
-| CKV_GCP_78               | `storage_bucket`       | Versioning is off by default because it is charged per version. Set `versioning_enabled` to turn it on |
-| CKV_GCP_82               | `kms_key`              | Google does not allow a key ring or a key to be deleted, and `prevent_destroy` would block every destroy |
-| CKV_GCP_106              | `vpc`                  | Port 80 is open to the internet on purpose, so a public web tier can redirect to HTTPS. The ports are set by `public_allowed_tcp_ports` |
-
-When a finding is fixed, rebuild the baseline with `checkov --directory . --framework terraform --quiet --create-baseline`.
-
-The script skips TFLint and the security scanners when they are not installed, so the format, validate and test checks still run without them.
+The script skips TFLint, Checkov and Trivy when they are not installed, so the format, validate and test checks still run without them.
 
 ## Requirements
 

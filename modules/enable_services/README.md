@@ -49,10 +49,10 @@ This module enables multiple GCP APIs (`services`) in a project, based on a list
 - Makes it easy to manage many APIs at once without repeating code.
 
 ## Important Tips
-- **Enabling an API can take time** — Terraform may need to wait for the service to be fully available before using it (e.g., creating a GKE cluster right after enabling Kubernetes API).
+- **Enabling an API can take time** - Terraform may need to wait for the service to be fully available before using it (e.g., creating a GKE cluster right after enabling Kubernetes API).
 - **Use `depends_on`** if your resources need to wait until the APIs are fully enabled.
-- **Idempotent** — Terraform won’t try to re-enable already active APIs unnecessarily.
-- **API Naming** — Ensure API names (like `compute.googleapis.com`) are correct. Incorrect names will cause Terraform errors.
+- **Idempotent** - Terraform won’t try to re-enable already active APIs unnecessarily.
+- **API Naming** - Ensure API names (like `compute.googleapis.com`) are correct. Incorrect names will cause Terraform errors.
 
 ## Typical Use Case
 Enable required APIs before creating resources like:

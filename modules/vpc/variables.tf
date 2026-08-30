@@ -59,8 +59,8 @@ variable "private_instance_tags" {
 
 variable "public_allowed_tcp_ports" {
   type        = list(string)
-  default     = ["80", "443"]
-  description = "The TCP ports the public subnet resources accept traffic on from the internet"
+  default     = ["443"]
+  description = "The TCP ports the public subnet resources accept traffic on from the internet. Add 80 where an instance answers plain HTTP and redirects to HTTPS itself"
 }
 
 variable "backend_allowed_tcp_ports" {
@@ -71,8 +71,8 @@ variable "backend_allowed_tcp_ports" {
 
 variable "flow_logs_enabled" {
   type        = bool
-  default     = false
-  description = "Whether VPC flow logs are collected for the private subnet. The logs are charged per GB"
+  default     = true
+  description = "Whether VPC flow logs are collected for both subnets. The logs are charged per GB, so set this to false where the traffic volume makes them expensive"
 }
 
 variable "flow_logs_aggregation_interval" {

@@ -37,6 +37,11 @@ module "vpc" {
 | `pod_ip_cidr_range`      | Cluster's subnetwork range to use for pods                        | `string`      | Optional |
 | `services_ip_cidr_range` | Cluster's subnetwork range to use for service                     | `string`      | Optional |
 | `master_ipv4_cidr_range` | The IP CIDR range used by the master/control plane nodes          | `string`      | Optional |
+| `public_allowed_tcp_ports` | The TCP ports the public subnet accepts from the internet, defaults to 443 only | `list(string)` | Optional |
+| `backend_allowed_tcp_ports` | The TCP ports the private subnet accepts from the public subnet | `list(string)` | Optional |
+| `flow_logs_enabled`      | Whether flow logs are collected for both subnets, on by default    | `bool`        | Optional |
+| `flow_logs_aggregation_interval` | How often the flow logs are aggregated                     | `string`      | Optional |
+| `flow_logs_sampling_rate` | The share of the traffic written to the flow logs, from 0 to 1    | `number`      | Optional |
 
 
 ## Outputs

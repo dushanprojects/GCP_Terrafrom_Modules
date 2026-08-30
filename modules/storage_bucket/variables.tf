@@ -41,8 +41,8 @@ variable "log_bucket_name" {
 
 variable "versioning_enabled" {
   type        = bool
-  default     = false
-  description = "Bucket versioning enabled|disabled"
+  default     = true
+  description = "Bucket versioning enabled|disabled. Old versions are charged as stored data, so pair this with a lifecycle rule on num_newer_versions"
 }
 
 variable "encryption_kms_key_id" {

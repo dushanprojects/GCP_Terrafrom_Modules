@@ -33,6 +33,7 @@ module "gcs" {
 | `force_destroy_enabled`   | When deleting a bucket, this boolean option will delete all contained objects | `bool`        | Optional |
 | `log_bucket_name`         | The bucket that will receive log objects                                      | `string`      | Optional |
 | `versioning_enabled`      | Bucket versioning enabled|disabled                                            | `bool`        | Optional |
+| `uniform_bucket_level_access` | Whether access is controlled by IAM alone rather than by per object ACLs  | `bool`        | Optional |
 | `encryption_kms_key_id`   | The bucket's encryption KMS key id                                            | `string`      | Optional |
 | `lifecycle_rules`         | List of lifecycle rules for the bucket                                        | `list(object)`| Optional |
 | `common_labels`           | A map of key-value pairs to tag resources consistently                        | `map(string)` | Optional |
